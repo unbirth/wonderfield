@@ -1,4 +1,5 @@
 #include "question.h"
+#include <qdebug.h>
 #include <stdio.h>
 #include <string.h>
 #include <string.h>
@@ -10,7 +11,7 @@ Question::Question()
     this->answer = "";
     this->length = 0;
     wasBefore = false;
-    this->letters = new pair<char, bool>[answer.length()];
+    this->letters = new pair<QChar, bool>[answer.length()];
 }
 
 Question::~Question()
@@ -18,12 +19,12 @@ Question::~Question()
     delete letters;
 }
 
-void Question::Form(string question, string answer)
+void Question::Form(QString question, QString answer)
 {
     this->question = question;
     this->answer = answer;
     this->length = answer.length();
-    this->letters = new pair<char, bool>[this->length];
+    this->letters = new pair<QChar, bool>[this->length];
     for (int i = 0; i < this->length; i++)
     {
         this->letters[i].first = this->answer[i];
@@ -31,30 +32,38 @@ void Question::Form(string question, string answer)
     }
 }
 
-void Question::ShowQuestion()
+int Question::getAmount()
 {
-    printf("Q:%s\n", this->question.c_str());
-    printf("A:%s\n", this->answer.c_str());
-    printf("Letters:\n");
-    for(int i = 0; i < this->length; i++ )
-    {
-        printf("[%c] = %d\n", this->letters[i].first, this->letters[i].second); //Printing pairs 'letter - was it shown or not'
-    }
+    return this->length;
 }
 
-bool Question::CheckLetter(char letter)
+QString Question::getQuestion()
+{
+    return this->question;
+}
+
+QString Question::getAnswer()
+{
+    return this->answer;
+}
+pair<QChar, bool>* Question::getLetters()
+{
+    return this->letters;
+}
+
+bool Question::CheckLetter(QChar letter)
 {
     bool guessedAllLetters = true;                                  //Shows if all letters have been guessed
 
     for(int i = 0; i < this->answer.length(); i++)
     {
-        if(tolower(letters[i].first) == tolower(letter)) letters[i].second = true;    //If letter is present, check it as guessed everywhere
+        if(letters[i].first.toLower() == letter.toLower()) letters[i].second = true;    //If letter is present, check it as guessed everywhere
         if(!letters[i].second) guessedAllLetters = false;           //At least one unguessed - check as unguessed
     }
     return guessedAllLetters;                                       //Return word state (guessed or not).
 }
 
-bool Question::CheckWord(string word)
+bool Question::CheckWord(QString word)
 {
     if (word.length() != this->answer.length())
     {
@@ -64,7 +73,7 @@ bool Question::CheckWord(string word)
     {
         for (int i = 0; i < word.length(); i++)
         {
-            if(tolower(letters[i].first) != tolower(word[i])) return false;
+            if(letters[i].first.toLower() != word[i].toLower()) return false;
         }
     }
     return true;                                //All is clear

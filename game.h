@@ -11,23 +11,32 @@ using namespace std;
 
 class Game : public QObject
 {
+    Q_OBJECT
+
 private:
     Base base;
-    string playerName;
-    pair <char, bool> alphabet[26];
+    QString playerName;
+    pair <QChar, bool> alphabet[32];
     int points;
+    void addPoints(int points);
 
 public:
     Game();
-    Game(string name);
+    Game(QString name);
     ~Game();
-    void setName(string name);
-    void addPoints(int points);
+
+public slots:
     void resetGame();
+    int getLength();
+    QString getQuestion();
+    QString getAnswer();
+    QChar getLetter(int index);
     void resetAlphabet();
-    void guessLetter(char letter);
-    void guessWord(string word);
-    int rollDice();
+    void guessLetter(QChar letter);
+    void guessWord(QString word);
+    int rollDice();    void setName(QString name);
+
+
 };
 
 #endif // GAME_H

@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <fstream>
 #include <cstdlib>
+#include <qdebug.h>
 #include <time.h>
 
 using namespace std;
@@ -12,6 +13,7 @@ using namespace std;
 Base::Base()
 {
     this->Load("input.txt");
+    qDebug() << "КОНСТРУКТОР BASE";
 }
 
 Base::~Base()
@@ -21,8 +23,6 @@ Base::~Base()
 
 void Base::Load(string filename)
 {
-    try
-    {
         string a, q;
         freopen(filename.c_str(), "r", stdin);
 
@@ -33,16 +33,12 @@ void Base::Load(string filename)
         {
             getline(cin, q);
             getline(cin, a);
-            this->base[i].Form(q, a);
+            this->base[i].Form(QString::fromStdString(q), QString::fromStdString(a));
         }
 
         fclose(stdin);
-    }
-    catch(exception e)
-    {
-        printf("EXCEPTION:\n\n%s", e.what());
-    }
 }
+
 
 void Base::LoadQuestion()
 {
@@ -55,7 +51,7 @@ void Base::LoadQuestion()
     this->currentQuestion = this->base[n];
 }
 
-Question Base::returnCurrentQuestion()
+Question* Base::returnCurrentQuestion()
 {
-    return currentQuestion;
+    return &currentQuestion;
 }

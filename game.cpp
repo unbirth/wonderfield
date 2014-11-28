@@ -1,4 +1,5 @@
 #include "game.h"
+#include <qdebug.h>
 #include <iostream>
 #include <stdio.h>
 #include <base.h>
@@ -21,11 +22,12 @@ int countPoints(int length)
 
 Game::Game()
 {
+    qDebug() << "КОНСТРУКТОР ВЫЗВАЛСЯ!";
     this->playerName = "Аноним Анонимыч";
     this->resetGame();
 }
 
-Game::Game(string name)
+Game::Game(QString name)
 {
     setName(name);
     this->resetGame();
@@ -36,23 +38,40 @@ Game::~Game()
     //delete alphabet;
 }
 
+QChar Game::getLetter(int index)
+{
+    if(this->base.returnCurrentQuestion()->getLetters()[index].second)
+    {
+        return this->base.returnCurrentQuestion()->getLetters()[index].first;
+    }
+    else return '*';
+}
+
 void Game::resetGame()
 {
     this->base.LoadQuestion();
     this->points = 0;
+    qDebug() << "RESET GAME";
     resetAlphabet();
 }
 
 void Game::resetAlphabet()
 {
-    for(char i = 'a'; i <= 'z'; i++)
+    QString s = "абвгдежзийклмнопрстуфхцчшщьыъэюя";
+    for(int i = 0; i <= 32; i++)
     {
-        this->alphabet[i-'a'].first = i;
-        this->alphabet[i-'a'].second = false;
+        this->alphabet[i].first = s[i];
+        this->alphabet[i].second = false;
     }
+   // qDebug() << this->base.returnCurrentQuestion()->getQuestion() << this->base.returnCurrentQuestion()->getAnswer();
 }
 
-void Game::setName(string name)
+int Game::getLength()
+{
+    return this->base.returnCurrentQuestion()->getAmount();
+}
+
+void Game::setName(QString name)
 {
     this->playerName = name;
 }
@@ -62,6 +81,16 @@ void Game::addPoints(int points)
     this->points += points;
 }
 
+QString Game::getQuestion()
+{
+    return this->base.returnCurrentQuestion()->getQuestion();
+}
+
+QString Game::getAnswer()
+{
+    return this->base.returnCurrentQuestion()->getAnswer();
+}
+
 int Game::rollDice()
 {
     srand(time(NULL));
@@ -69,24 +98,27 @@ int Game::rollDice()
     return value;
 }
 
-void Game::guessLetter(char letter)
+void Game::guessLetter(QChar letter)
 {
-    if(!this->alphabet[letter-'a'].second)
+    for(int i = 0; i < 33; i++)
     {
-        if(this->base.returnCurrentQuestion().CheckLetter(letter))
+        if(this->alphabet[i].first == letter && !this->alphabet[i].second)
         {
-            addPoints(10);
-        }
-        else
-        {
-            //TODO: Bad bonus
+            if(this->base.returnCurrentQuestion()->CheckLetter(letter))
+            {
+                addPoints(10);
+            }
+            else
+            {
+                //TODO: Bad bonus
+            }
         }
     }
 }
 
-void Game::guessWord(string word)
+void Game::guessWord(QString word)
 {
-    if (this->base.returnCurrentQuestion().CheckWord(word))
+    if (this->base.returnCurrentQuestion()->CheckWord(word))
     {
         addPoints(countPoints(word.length()));
     }
