@@ -14,20 +14,21 @@ private:
     QString answer;                                  //Ответ
     int length;                                     //Длина ответа
     pair <QChar, bool>* letters;                     //Пары: буква слова - была ли угадана
+    int points;
 
 
 public:
     Question();
     ~Question();                                    //Массив у нас один - letters, очищаем память
 
-    bool wasBefore;                                 //Было ли это слово загадано ранее
     void Form(QString question, QString answer);      //Формируем новый вопрос, грубо говоря - конструктор с параметрами
     QString getQuestion();                            //Вывод на экран, отладочная функция
-    bool CheckLetter(QChar letter);                  //Угадывание буквы;         todo: доработать эту функцию
-    bool CheckWord(QString word);                    //Угадывание целого слова;  todo: дописать
+    bool CheckLetter(QChar letter, int multiplier);                  //Угадывание буквы;         todo: доработать эту функцию
+    bool CheckWord();                    //Угадывание целого слова;  todo: дописать
     int getAmount();
     QString getAnswer();
     pair <QChar, bool>* getLetters();
+    int getPoints();
 
 
 };

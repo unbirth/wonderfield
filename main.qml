@@ -6,53 +6,75 @@ ApplicationWindow {
     id: mainWindow
     visible: true
     color: "white"
-    width: 640
-    height: 480
+    minimumWidth: 800
+    minimumHeight: 600
+    maximumWidth: 800
+    maximumHeight: 600
+    width: 800
+    height: 600
+
     opacity: 1
     title: qsTr("WonderField")
-    minimumHeight: height
-    maximumHeight: height
-    minimumWidth: width
-    maximumWidth: width
+
+    property int multiplier: 0
+    property bool wasRotated: false
+    property string alph: "абвгдеёжзийклмнопрстуфхцчшщьыъэюя"
+
+    signal newGame
 
     MyGame
     {
         id: myGame
     }
 
+    onNewGame:
+    {
+        myGame.resetGame();
+        gameQuestion.text = myGame.getQuestion()
+        gameAnswer.x = 400 - (myGame.getLength() / 2) * 40
+
+        for(var i = 0; i < 33; i++)
+        {
+            alphabet.children[i].enabled = true;
+            alphabet.children[i].opacity = 100
+        }
+
+        gameAnswer.columns = myGame.getLength()
+        updateLetters()
+
+    }
+
+
     Item {
         id: mainMenu
         Button {
             id: startGameButton
-            x: 30
-            y: 248
-            width: 202
-            height: 71
+            x: 82
+            y: 275
+            width: 390
+            height: 125
             text: "Начать игру"
             onClicked:
             {
                 mainMenu.visible = false; gameScreen.visible = true;
-               // myGame.resetGame()
                 gameQuestion.text = myGame.getQuestion()
-                //Start Game
-
             }
         }
 
         Button {
             id: exitButton
-            x: 30
-            y: 379
-            width: 202
-            height: 71
+            x: 82
+            y: 439
+            width: 390
+            height: 125
             text: "Выход"
             onClicked: close()
         }
 
         Image {
             id: rotatingBaraban
-            x: 392
-            y: -110
+            x: 566
+            y: -50
             width: 700
             height: 700
             sourceSize.width: 415
@@ -71,8 +93,8 @@ ApplicationWindow {
             id: gameLogo
             x: 30
             y: 30
-            width: 316
-            height: 149
+            width: 494
+            height: 194
             source: "w_logo.png"
         }
 
@@ -80,502 +102,155 @@ ApplicationWindow {
 
     }
 
+    function updateLetters()
+    {
+        console.log("WORD: " + myGame.getAnswer() + "COLUMNS: " + gameAnswer.columns)
+        for(var i = 0; i < 13; i++)
+        {
+           if( i < myGame.getLength())
+           {
+               gameAnswer.children[i].width = 40
+               gameAnswer.children[i].text = myGame.getLetter(i)
+           }
+           else
+           {
+               gameAnswer.children[i].text = ""
+               gameAnswer.children[i].width = 0
+           }
+        }
+        if(myGame.checkWord())
+        {
+            newGame()
+        }
+    }
+
+
     Item
     {
         id: gameScreen
         visible: false
 
-
         Grid {
                 id: gameAnswer
-                x: 320 - (myGame.getLength() / 2) * 40; y: 200
+                x: 400 - (myGame.getLength() / 2) * 40; y: 370
+                z: 2
                 rows: 1; columns: myGame.getLength(); spacing: 1
 
-                Repeater
-                {
-                    model: myGame.getLength();
-                    Rectangle
-                    {
-                        width: 40;
-                        height: 40
-                        color: "lightgray"
-                        Text
-                        {
-                            visible: false
-                            text: myGame.getAnswer()[index]
-                            font.pixelSize: 16
-                            anchors.centerIn: parent
-                        }
-                    }
-                }
+                WTextField{}
+                WTextField{}
+                WTextField{}
+                WTextField{}
+                WTextField{}
+                WTextField{}
+                WTextField{}
+                WTextField{}
+                WTextField{}
+                WTextField{}
+                WTextField{}
+                WTextField{}
+                WTextField{}
             }
 
         Text {
             id: gameQuestion
-            x: 30
-            y: 30
-            width: 580
-            height: 116
+            x: 36
+            y: 215
+            width: 740
+            height: 115
             text: ("")
+            verticalAlignment: Text.AlignBottom
             wrapMode: Text.WordWrap
             font.family: "Tahoma"
             horizontalAlignment: Text.AlignHCenter
             font.pixelSize: 17
         }
 
-        Item
-        {
-            id: alphabet
-            x: 2
-            antialiasing: false
-            z: 0
-            scale: 1
-            Button {
-                id: button1
-                x: 66
-                y: 329
-                width: 40
-                height: 40
-                text: ("А")
-                onClicked:
-                {
-                    visible = false;
-                    myGame.checkLetter("а")
-                }
+
+
+        Grid {
+                id: alphabet
+                x: 73
+                y: 425
+                rows: 3; columns: 11; spacing: 22;
+
+                WButton{text: alph[0]}
+                WButton{text: alph[1]}
+                WButton{text: alph[2]}
+                WButton{text: alph[3]}
+                WButton{text: alph[4]}
+                WButton{text: alph[5]}
+                WButton{text: alph[6]}
+                WButton{text: alph[7]}
+                WButton{text: alph[8]}
+                WButton{text: alph[9]}
+                WButton{text: alph[10]}
+                WButton{text: alph[11]}
+                WButton{text: alph[12]}
+                WButton{text: alph[13]}
+                WButton{text: alph[14]}
+                WButton{text: alph[15]}
+                WButton{text: alph[16]}
+                WButton{text: alph[17]}
+                WButton{text: alph[18]}
+                WButton{text: alph[19]}
+                WButton{text: alph[20]}
+                WButton{text: alph[21]}
+                WButton{text: alph[22]}
+                WButton{text: alph[23]}
+                WButton{text: alph[24]}
+                WButton{text: alph[25]}
+                WButton{text: alph[26]}
+                WButton{text: alph[27]}
+                WButton{text: alph[28]}
+                WButton{text: alph[29]}
+                WButton{text: alph[30]}
+                WButton{text: alph[31]}
+                WButton{text: alph[32]}
+
+
             }
 
-            Button {
-                id: button2
-                x: 112
-                y: 329
-                width: 40
-                height: 40
-                text: "Б"
+        Image {
+            id: gameBaraban
+            x: 50
+            y: -550
+            width: 700
+            height: 700
+            source: "w_bar.png"
+
+            MouseArea
+            {
+                anchors.fill: parent
+                id: mouseArea;
+                x: 50
+                y: -550
+                width: 700
+                height: 700
                 onClicked:
                 {
-                    visible = false;
+                    rotateBaraban.start();
                 }
             }
-
-            Button {
-                id: button3
-                x: 158
-                y: 329
-                width: 40
-                height: 40
-                text: "В"
-                onClicked:
+            ParallelAnimation {
+                id: rotateBaraban
+                NumberAnimation { target: gameBaraban; properties: "rotation"; duration: 1000 + Math.random()*2000; easing.type: Easing.InOutQuad; to: gameBaraban.rotation + 500 + Math.random()*1200}
+                onStopped:
                 {
-                    visible = false;
-
+                    multiplier = gameBaraban.rotation % 360;
+                    console.log(multiplier);
+                    wasRotated = true
                 }
             }
+        }
 
-            Button {
-                id: button4
-                x: 204
-                y: 329
-                width: 40
-                height: 40
-                text: "Г"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button5
-                x: 250
-                y: 329
-                width: 40
-                height: 40
-                text: "Д"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button6
-                x: 296
-                y: 329
-                width: 40
-                height: 40
-                text: "Е"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button7
-                x: 342
-                y: 329
-                width: 40
-                height: 40
-                text: "Ж"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button8
-                x: 388
-                y: 329
-                width: 40
-                height: 40
-                text: "З"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button9
-                x: 434
-                y: 329
-                width: 40
-                height: 40
-                text: "И"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button10
-                x: 480
-                y: 329
-                width: 40
-                height: 40
-                text: "Й"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button11
-                x: 526
-                y: 329
-                width: 40
-                height: 40
-                text: "К"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button12
-                x: 89
-                y: 375
-                width: 40
-                height: 40
-                text: "Л"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button13
-                x: 135
-                y: 375
-                width: 40
-                height: 40
-                text: "М"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button14
-                x: 181
-                y: 375
-                width: 40
-                height: 40
-                text: "Н"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button15
-                x: 227
-                y: 375
-                width: 40
-                height: 40
-                text: "О"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button16
-                x: 273
-                y: 375
-                width: 40
-                height: 40
-                text: "П"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button17
-                x: 319
-                y: 375
-                width: 40
-                height: 40
-                text: "Р"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button18
-                x: 365
-                y: 375
-                width: 40
-                height: 40
-                text: "С"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button19
-                x: 411
-                y: 375
-                width: 40
-                height: 40
-                text: "Т"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button20
-                x: 457
-                y: 375
-                width: 40
-                height: 40
-                text: "У"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button21
-                x: 503
-                y: 375
-                width: 40
-                height: 40
-                text: "Ф"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button22
-                x: 66
-                y: 421
-                width: 40
-                height: 40
-                text: "Х"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button23
-                x: 112
-                y: 421
-                width: 40
-                height: 40
-                text: "Ц"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button24
-                x: 158
-                y: 421
-                width: 40
-                height: 40
-                text: "Ч"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button25
-                x: 204
-                y: 421
-                width: 40
-                height: 40
-                text: "Ш"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button26
-                x: 250
-                y: 421
-                width: 40
-                height: 40
-                text: "Щ"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button27
-                x: 296
-                y: 421
-                width: 40
-                height: 40
-                text: "Ь"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button28
-                x: 342
-                y: 421
-                width: 40
-                height: 40
-                text: "Ы"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button29
-                x: 388
-                y: 421
-                width: 40
-                height: 40
-                text: "Ъ"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button30
-                x: 434
-                y: 421
-                width: 40
-                height: 40
-                text: "Э"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button31
-                x: 480
-                y: 421
-                width: 40
-                height: 40
-                text: "Ю"
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
-
-            Button {
-                id: button32
-                x: 526
-                y: 421
-                width: 40
-                height: 40
-                text: ("Я")
-                onClicked:
-                {
-                    visible = false;
-
-                }
-            }
+        Image {
+            id: pointer
+            x: 385
+            y: 117
+            width: 30
+            height: 60
+            z: 1
+            source: "w_pointer.png"
         }
     }
 }

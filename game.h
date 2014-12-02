@@ -15,10 +15,11 @@ class Game : public QObject
 
 private:
     Base base;
-    QString playerName;
-    pair <QChar, bool> alphabet[32];
     int points;
-    void addPoints(int points);
+    pair <QChar, bool> alphabet[32];
+    QString playerName;
+
+    void setPoints(int points);
 
 public:
     Game();
@@ -26,16 +27,15 @@ public:
     ~Game();
 
 public slots:
-    void resetGame();
+    bool guessLetter(QString letter, int multiplier);
+    bool checkWord();
     int getLength();
-    QString getQuestion();
-    QString getAnswer();
-    QChar getLetter(int index);
     void resetAlphabet();
-    void guessLetter(QChar letter);
-    void guessWord(QString word);
-    int rollDice();    void setName(QString name);
-
+    void resetGame();
+    void setName(QString name);
+    QString getLetter(int index);
+    QString getAnswer();
+    QString getQuestion();
 
 };
 

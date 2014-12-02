@@ -22,7 +22,6 @@ int countPoints(int length)
 
 Game::Game()
 {
-    qDebug() << "КОНСТРУКТОР ВЫЗВАЛСЯ!";
     this->playerName = "Аноним Анонимыч";
     this->resetGame();
 }
@@ -38,20 +37,20 @@ Game::~Game()
     //delete alphabet;
 }
 
-QChar Game::getLetter(int index)
+QString Game::getLetter(int index)
 {
     if(this->base.returnCurrentQuestion()->getLetters()[index].second)
     {
-        return this->base.returnCurrentQuestion()->getLetters()[index].first;
+        QString t = this->base.returnCurrentQuestion()->getLetters()[index].first.toLower();
+        return t;
     }
-    else return '*';
+    else return " ";
 }
 
 void Game::resetGame()
 {
     this->base.LoadQuestion();
     this->points = 0;
-    qDebug() << "RESET GAME";
     resetAlphabet();
 }
 
@@ -76,9 +75,9 @@ void Game::setName(QString name)
     this->playerName = name;
 }
 
-void Game::addPoints(int points)
+void Game::setPoints(int points)
 {
-    this->points += points;
+    this->points = points;
 }
 
 QString Game::getQuestion()
@@ -91,39 +90,30 @@ QString Game::getAnswer()
     return this->base.returnCurrentQuestion()->getAnswer();
 }
 
-int Game::rollDice()
-{
-    srand(time(NULL));
-    int value = 720 + rand()%720;
-    return value;
-}
-
-void Game::guessLetter(QChar letter)
+bool Game::guessLetter(QString letter, int multiplier)
 {
     for(int i = 0; i < 33; i++)
     {
-        if(this->alphabet[i].first == letter && !this->alphabet[i].second)
+        if(this->alphabet[i].first == letter[0].toLower() && !this->alphabet[i].second)
         {
-            if(this->base.returnCurrentQuestion()->CheckLetter(letter))
+            if(this->base.returnCurrentQuestion()->CheckLetter(letter[0].toLower(), multiplier))
             {
-                addPoints(10);
+                setPoints(this->base.returnCurrentQuestion()->getPoints());
+                return true;
+
             }
             else
             {
                 //TODO: Bad bonus
+                return false;
             }
         }
     }
+    return false;
 }
 
-void Game::guessWord(QString word)
+bool Game::checkWord()
 {
-    if (this->base.returnCurrentQuestion()->CheckWord(word))
-    {
-        addPoints(countPoints(word.length()));
-    }
-    else
-    {
-        //TODO: Game over
-    }
+    return this->base.returnCurrentQuestion()->CheckWord();
 }
+

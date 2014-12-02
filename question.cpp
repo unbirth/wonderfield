@@ -10,8 +10,8 @@ Question::Question()
     this->question = "";
     this->answer = "";
     this->length = 0;
-    wasBefore = false;
     this->letters = new pair<QChar, bool>[answer.length()];
+    this->points = 0;
 }
 
 Question::~Question()
@@ -51,30 +51,37 @@ pair<QChar, bool>* Question::getLetters()
     return this->letters;
 }
 
-bool Question::CheckLetter(QChar letter)
+bool Question::CheckLetter(QChar letter, int multiplier)
 {
-    bool guessedAllLetters = true;                                  //Shows if all letters have been guessed
+    bool guessedAnyLetter = false;                                  //Shows if all letters have been guessed
 
     for(int i = 0; i < this->answer.length(); i++)
     {
-        if(letters[i].first.toLower() == letter.toLower()) letters[i].second = true;    //If letter is present, check it as guessed everywhere
-        if(!letters[i].second) guessedAllLetters = false;           //At least one unguessed - check as unguessed
-    }
-    return guessedAllLetters;                                       //Return word state (guessed or not).
-}
-
-bool Question::CheckWord(QString word)
-{
-    if (word.length() != this->answer.length())
-    {
-        return false;
-    }
-    else
-    {
-        for (int i = 0; i < word.length(); i++)
+        if(letters[i].first.toLower() == letter)
         {
-            if(letters[i].first.toLower() != word[i].toLower()) return false;
+            letters[i].second = true;    //If letter is present, check it as guessed everywhere
+            guessedAnyLetter = true;           //At least one unguessed - check as unguessed
+            points += multiplier;
         }
     }
-    return true;                                //All is clear
+    return guessedAnyLetter;                                       //Return word state (guessed or not).
+}
+
+bool Question::CheckWord()
+{
+    for(int i = 0; i < this->length; i++)
+    {
+        if(!this->letters[i].second) return false;
+    }
+
+    for(int i = 0; i < this->length; i++)
+    {
+        this->letters[i].second = false;
+    }
+    return true;
+}
+
+int Question::getPoints()
+{
+    return this->points;
 }

@@ -5,7 +5,7 @@
 class Base
 {
 private:
-    Question* base;
+    pair <Question, bool>* base;
     Question currentQuestion;
     int amount;
 

@@ -3,5 +3,9 @@
         <file>main.qml</file>
         <file>w_bar.png</file>
         <file>w_logo.png</file>
+        <file>w_pointer.png</file>
+        <file>WButton.qml</file>
+        <file>c2.otf</file>
+        <file>WTextField.qml</file>
     </qresource>
 </RCC>
