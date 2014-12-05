@@ -1,5 +1,5 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.2
+import QtQuick.Controls 1.0
 import com.me.qmlcomponents 1.0
 
 Rectangle {
