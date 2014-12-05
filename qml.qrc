@@ -11,5 +11,6 @@
         <file>WTextField.qml</file>
         <file>MainMenu.qml</file>
         <file>DialogWindow.qml</file>
+        <file>Notification.qml</file>
     </qresource>
 </RCC>

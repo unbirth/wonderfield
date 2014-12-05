@@ -3,8 +3,16 @@ import QtQuick.Controls 1.2
 import com.me.qmlcomponents 1.0
 
 Item {
+    id: mainMenu
 
-
+    Image {
+        id: backGroundImage
+        x: 0
+        y: 0
+        width: 800
+        height: 600
+        source: "w_background.png"
+    }
 
     Image {
         id: rotatingBaraban
@@ -26,10 +34,12 @@ Item {
 
     Image {
         id: gameLogo
+
+        horizontalAlignment: Image.AlignHCenter
         x: 30
         y: 30
-        width: 494
-        height: 194
+        width: 328 * 1.5
+        height: 151 * 1.5
         source: "w_logo.png"
     }
 

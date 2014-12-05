@@ -5,6 +5,7 @@ import com.me.qmlcomponents 1.0
 Rectangle
 {
     property string text: " "
+    property int number: 0
     signal clicked;
     id: container
     width: 40; height: 40
@@ -26,9 +27,19 @@ Rectangle
     MouseArea
     {
         id: mouseArea
+        anchors.fill: parent
         onClicked:
         {
-            containter.clicked()
+            container.clicked();
+            if(bonusPlus)
+            {
+                bonusPlus = false;
+                wasRotated = false;
+                myGame.guessLetter(myGame.getAnswer()[number], 100);
+                alphabet.enabled = true;
+                updateLetters();
+            }
+
         }
     }
 }

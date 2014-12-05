@@ -11,7 +11,6 @@ Question::Question()
     this->answer = "";
     this->length = 0;
     this->letters = new pair<QChar, bool>[answer.length()];
-    this->points = 0;
 }
 
 Question::~Question()
@@ -51,7 +50,7 @@ pair<QChar, bool>* Question::getLetters()
     return this->letters;
 }
 
-bool Question::CheckLetter(QChar letter, int multiplier)
+int Question::CheckLetter(QChar letter, int points, int multiplier)
 {
     bool guessedAnyLetter = false;                                  //Shows if all letters have been guessed
     int m = 0;
@@ -71,25 +70,24 @@ bool Question::CheckLetter(QChar letter, int multiplier)
         if(multiplier >= 100)
         {
             points += m;
+            return points;
         }
         else
         {
             switch(multiplier)
             {
+            case 0:
+                return points;
             case 3:
-                points *= 3;
-                break;
+                return points *= 3;
             case 5:
-                points *= 5;
-                break;
+                return points *= 5;
             case 2:
-                points *= 2;
-                break;
+                return points *= 2;
             }
         }
     }
-    qDebug() << "POINTS: "<< points;
-    return guessedAnyLetter;                                       //Return word state (guessed or not).
+    else return 0;                                     //Return word state (guessed or not).
 }
 
 bool Question::CheckWord()
@@ -104,9 +102,4 @@ bool Question::CheckWord()
         this->letters[i].second = false;
     }
     return true;
-}
-
-int Question::getPoints()
-{
-    return this->points;
 }

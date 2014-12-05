@@ -76,7 +76,7 @@ void Game::setName(QString name)
     this->playerName = name;
 }
 
-void Game::setPoints(int points)
+void Game::setPoints(unsigned long long points)
 {
     this->points = points;
 }
@@ -97,17 +97,9 @@ bool Game::guessLetter(QString letter, int multiplier)
     {
         if(this->alphabet[i].first == letter[0].toLower() && !this->alphabet[i].second)
         {
-            if(this->base.returnCurrentQuestion()->CheckLetter(letter[0].toLower(), multiplier))
-            {
-                setPoints(this->base.returnCurrentQuestion()->getPoints());
-                return true;
-
-            }
-            else
-            {
-                //TODO: Bad bonus
-                return false;
-            }
+            unsigned long long temp = this->points;
+            setPoints(this->base.returnCurrentQuestion()->CheckLetter(letter[0].toLower(), this->points, multiplier));
+            return (this->points - temp);
         }
     }
     return false;
@@ -118,7 +110,7 @@ bool Game::checkWord()
     return this->base.returnCurrentQuestion()->CheckWord();
 }
 
-int Game::getPoints()
+unsigned long long Game::getPoints()
 {
     return this->points;
 }

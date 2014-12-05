@@ -6,15 +6,34 @@ Rectangle
 {
     id: container
 
+    NumberAnimation on opacity {
+           id: showAnimation
+           to: 1
+           duration: 500
+       }
+
+    NumberAnimation on opacity {
+           id: hideAnimation
+           to: 0
+           duration: 500
+       }
+
         property string text: "Button"
         signal clicked
+        signal appeared
 
 
         width: 40; height: 40
         smooth: true
         radius: 3
         color: "white"
-        opacity: 0.95
+        opacity: 1
+
+
+        onAppeared:
+        {
+            showAnimation.start();
+        }
 
         MouseArea  {
             id: mouseArea
@@ -22,17 +41,32 @@ Rectangle
 
             onClicked:
             {
-//                if (wasRotated == true)
-//                {
-                    container.clicked();
-                    container.opacity = 0
-                    container.enabled = false;
+                if (bonusPlus)
+                {
+                    pleaseChooseBox.visible = true;
+                }
+                else
+                {
+                    if (wasRotated == true)
+                    {
+                        container.clicked();
+                        hideAnimation.start();
+                        //container.opacity = 0
+                        container.enabled = false;
 
-                    if(multiplier != 8)
-                        myGame.guessLetter(text, multiplier)
+                        if(multiplier != 8)
+                            myGame.guessLetter(text, multiplier)
 
-                    wasRotated = false;
-//                }
+                        wasRotated = false;
+                    }
+
+                    else
+                    {
+                        pleaseRoll.visible = true;
+                    }
+                }
+
+
                 updateLetters();
             }
 

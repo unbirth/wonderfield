@@ -19,6 +19,7 @@ ApplicationWindow {
 
     property int multiplier: 0
     property bool wasRotated: false
+    property bool bonusPlus: false
     property string alph: "абвгдеёжзийклмнопрстуфхцчшщьыъэюя"
     property string hintRoll: "быстрейкрутитебарабан"
     property string hintPlus: "ыв"
@@ -33,6 +34,33 @@ ApplicationWindow {
         id: myGame
     }
 
+    Notification
+    {
+        id:     pleaseRoll;
+        message: "Крутите, пожалуйста, барабан!";
+        visible: false;
+        z: 10;
+
+
+
+    }
+
+    Notification
+    {
+        id:     pleaseChoose;
+        message: "Выберите, пожалуйста, букву!";
+        visible: false;
+        z: 10;
+    }
+
+    Notification
+    {
+        id:     pleaseChooseBox;
+        message: "Выберите, пожалуйста, клетку!";
+        visible: false;
+        z: 10;
+    }
+
     onNewGame:
     {
         myGame.resetGame();
@@ -42,46 +70,93 @@ ApplicationWindow {
         for(var i = 0; i < 33; i++)
         {
             alphabet.children[i].enabled = true;
-            alphabet.children[i].opacity = 100
+            alphabet.children[i].appeared();
         }
 
         gameAnswer.columns = myGame.getLength()
         updateLetters()
-
     }
-
-/*
-
-*/
 
     MainMenu
     {
         id: mainMenu
         z:  0
 
-        Button {
+        Rectangle
+        {
             id: startGameButton
-            x: 82
+            x: 50
             y: 275
             width: 390
             height: 125
-            text: "Начать игру"
-            onClicked:
+
+
+            color:      "transparent"
+            border.width: 3
+            border.color: "white"
+            radius:         5
+
+            Text {
+                id: startButtonText
+                text: "Старт"
+
+                anchors.fill: parent
+
+                font.family: uniTwo.name
+                color:  "white"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                font.pointSize: 48
+            }
+
+            MouseArea
             {
-                mainMenu.visible = false;
-                gameScreen.visible = true;
-                gameQuestion.text = myGame.getQuestion()
+                id: startMouseArea
+                anchors.fill: parent
+                onClicked:
+                {
+                    mainMenu.visible = false;
+                    gameScreen.visible = true;
+                    gameQuestion.text = myGame.getQuestion()
+                }
             }
         }
 
-        Button {
+        Rectangle
+        {
             id: exitButton
-            x: 82
+            x: 50
             y: 439
             width: 390
             height: 125
-            text: "Выход"
-            onClicked: close()
+
+            color:      "transparent"
+            border.width: 3
+            border.color: "white"
+            radius:         5
+
+            Text {
+                id: exitButtonText
+                text: "Выход"
+
+                anchors.fill: parent
+
+                font.family: uniTwo.name
+                color:  "white"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                font.pointSize: 48
+            }
+
+            MouseArea
+            {
+                id: exitMouseArea
+                anchors.fill: parent
+                onClicked:
+                {
+                    close()
+                }
+            }
         }
     }
 
@@ -98,6 +173,7 @@ ApplicationWindow {
 
         onButtonOkClicked:
         {
+            newGame()
             dialogWindow.visible = false;
             alphabet.enabled = true
         }
@@ -127,7 +203,7 @@ ApplicationWindow {
 
         if(myGame.checkWord())
         {
-            newGame()
+            //newGame()
             alphabet.enabled = false
             dialogWindow.visible = true
         }
@@ -171,7 +247,7 @@ ApplicationWindow {
                 font.pointSize: 100
                 onTextChanged:
                 {
-                    if(pointsLabelText.text > highScoreLabelText.text)
+                    if(pointsLabelText.text * 1 > highScoreLabelText.text * 1)
                     {
                         highScoreLabelText.text = pointsLabelText.text
                     }
@@ -210,19 +286,21 @@ ApplicationWindow {
                 z: 2
                 rows: 1; columns: myGame.getLength(); spacing: 22
 
-                WTextField{}
-                WTextField{}
-                WTextField{}
-                WTextField{}
-                WTextField{}
-                WTextField{}
-                WTextField{}
-                WTextField{}
-                WTextField{}
-                WTextField{}
-                WTextField{}
-                WTextField{}
-                WTextField{}
+                WTextField{ number: 0 }
+                WTextField{ number: 1 }
+                WTextField{ number: 2 }
+                WTextField{ number: 3 }
+                WTextField{ number: 4 }
+                WTextField{ number: 5 }
+                WTextField{ number: 6 }
+                WTextField{ number: 7 }
+                WTextField{ number: 8 }
+                WTextField{ number: 9 }
+                WTextField{ number: 10 }
+                WTextField{ number: 11 }
+                WTextField{ number: 12 }
+
+
             }
 
 
@@ -325,7 +403,19 @@ ApplicationWindow {
                 height: 700
                 onClicked:
                 {
-                    rotateBaraban.start();
+                    if(!wasRotated)
+                    {
+                        rotateBaraban.start();
+                    }
+                    else if (!bonusPlus)
+                    {
+                        pleaseChoose.visible = true;
+                    }
+                    else if (bonusPlus)
+                    {
+                        pleaseChooseBox.visible = true;
+                    }
+
                 }
             }
             ParallelAnimation {
@@ -375,7 +465,8 @@ ApplicationWindow {
                         break;
                     case 8:
                         console.log("+1");
-                        //+1
+                        multiplier = 0;
+                        bonusPlus = true;
                         break;
                     case 9:
                         console.log("Б");
@@ -391,7 +482,7 @@ ApplicationWindow {
                         multiplier = 900;
                         break;
                     }
-                    wasRotated = true
+                    if (sector != 9) wasRotated = true
                 }
             }
         }

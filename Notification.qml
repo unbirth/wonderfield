@@ -4,19 +4,17 @@ import com.me.qmlcomponents 1.0
 
 Rectangle {
 
-    id: dialogWindow
-    property    int     distance:           75
+    id: notificationWindow
+    property    string  message:            "Здесь могла быть ваша реклама"
     property    int     backWidth:          800
     property    int     backHeight:         600
 
     signal              buttonOkClicked
-    signal              buttonCancelClicked
-
 
 
     Rectangle
     {
-        id:         dialogBackground
+        id:         notificationWindowBackground
         color:      "black"
         z:          3
         width:      backWidth
@@ -32,8 +30,8 @@ Rectangle {
         y:  backHeight / 2 - height / 2
         z:  4
 
-        width:  backWidth / 3 * 2
-        height: backHeight / 3
+        width:  400
+        height: 200
 
         color:  "transparent"
         border.width: 3
@@ -42,18 +40,19 @@ Rectangle {
 
         Rectangle
         {
-            id:         dialogTextBackground
+            id:         notificationTextBackground
 
             x:          25
             y:          25
 
             width:      parent.width - 50
-            height:     50
+            height:     100
+
 
             color:      "transparent"
             Text {
-                id: dialogText
-                text: qsTr("Двигаемся дальше?")
+                id: notificationText
+                text: message
                 anchors.fill: parent
 
                 font.family: uniTwo.name
@@ -67,19 +66,19 @@ Rectangle {
 
         Rectangle
         {
-            id: dialogYesBackground
-            x:          50
+            id: notificationOkBackground
+            x:          parent.width / 2 - width / 2
             y:          parent.height - height - 25
 
             height:     50
-            width:      parent.width / 2 - 100
+            width:      parent.width / 2 - 50
 
             color:      "transparent"
             border.width: 3
             border.color: "white"
             radius:         5
             Text {
-                id: dialogYes
+                id: notificationOk
                 text: qsTr("     Да, конечно!     ")
 
                 anchors.fill: parent
@@ -92,52 +91,15 @@ Rectangle {
             }
             MouseArea
             {
-                id: yesMouseArea
+                id: okMouseArea
                 anchors.fill: parent
                 onClicked:
                 {
                     buttonOkClicked()
-                }
-            }
-        }
-
-        Rectangle
-        {
-            id: dialogNoBackground
-            x:          parent.width - width - 50
-            y:          parent.height - height - 25
-
-            height:     50
-            width:      parent.width / 2 - 100
-
-            color:      "transparent"
-            border.width: 3
-            border.color: "white"
-            radius:         5
-            Text {
-                id: dialogNo
-                text: qsTr("     Ни за что!     ")
-
-                anchors.fill: parent
-
-                font.family: uniTwo.name
-                color:  "white"
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                font.pointSize: 16
-            }
-            MouseArea
-            {
-                id: noMouseArea
-                anchors.fill: parent
-                onClicked:
-                {
-                    buttonCancelClicked()
+                    notificationWindow.visible = false;
                 }
             }
         }
     }
-
-
 }
 
