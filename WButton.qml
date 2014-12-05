@@ -7,18 +7,14 @@ Rectangle
     id: container
 
         property string text: "Button"
-
         signal clicked
+
 
         width: 40; height: 40
         smooth: true
-        radius: 2
+        radius: 3
         color: "white"
-        border
-        {
-            width: 2
-            color: "#333333"
-        }
+        opacity: 0.95
 
         MouseArea  {
             id: mouseArea
@@ -30,10 +26,11 @@ Rectangle
 //                {
                     container.clicked();
                     container.opacity = 0
-
                     container.enabled = false;
 
-                    myGame.guessLetter(text, multiplier)
+                    if(multiplier != 8)
+                        myGame.guessLetter(text, multiplier)
+
                     wasRotated = false;
 //                }
                 updateLetters();
@@ -45,9 +42,10 @@ Rectangle
         Text  {
             id: buttonLabel
             anchors.centerIn: container
-            color: "#111111"
+            color: "#3b6b69"
             text: container.text
-            font.pixelSize: 20
+            font.pointSize: 20
+            font.family: uniOne.name
         }
 
 }

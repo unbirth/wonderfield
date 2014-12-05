@@ -5,22 +5,30 @@ import com.me.qmlcomponents 1.0
 Rectangle
 {
     property string text: " "
+    signal clicked;
     id: container
-    width: 40;
-    height: 40
+    width: 40; height: 40
+    smooth: true
+    radius: 3
     color: "white"
-    border
-    {
-        width: 2
-        color: "#333333"
-    }
+    opacity: 0.95
 
     Text
     {
         id: label
         visible: true
         text: container.text
-        font.pixelSize: 16
+        color: "#3d6576"
+        font.family: uniOne.name
+        font.pointSize: 20
         anchors.centerIn: container
+    }
+    MouseArea
+    {
+        id: mouseArea
+        onClicked:
+        {
+            containter.clicked()
+        }
     }
 }

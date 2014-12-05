@@ -4,8 +4,12 @@
         <file>w_bar.png</file>
         <file>w_logo.png</file>
         <file>w_pointer.png</file>
+        <file>w_background.png</file>
         <file>WButton.qml</file>
-        <file>c2.otf</file>
+        <file>uni.otf</file>
+        <file>uni2.otf</file>
         <file>WTextField.qml</file>
+        <file>MainMenu.qml</file>
+        <file>DialogWindow.qml</file>
     </qresource>
 </RCC>

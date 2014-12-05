@@ -9,6 +9,7 @@
 
 using namespace std;
 
+
 int countPoints(int length)
 {
 
@@ -23,6 +24,7 @@ int countPoints(int length)
 Game::Game()
 {
     this->playerName = "Аноним Анонимыч";
+    this->points = 0;
     this->resetGame();
 }
 
@@ -50,7 +52,6 @@ QString Game::getLetter(int index)
 void Game::resetGame()
 {
     this->base.LoadQuestion();
-    this->points = 0;
     resetAlphabet();
 }
 
@@ -115,5 +116,10 @@ bool Game::guessLetter(QString letter, int multiplier)
 bool Game::checkWord()
 {
     return this->base.returnCurrentQuestion()->CheckWord();
+}
+
+int Game::getPoints()
+{
+    return this->points;
 }
 

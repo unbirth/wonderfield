@@ -54,6 +54,8 @@ pair<QChar, bool>* Question::getLetters()
 bool Question::CheckLetter(QChar letter, int multiplier)
 {
     bool guessedAnyLetter = false;                                  //Shows if all letters have been guessed
+    int m = 0;
+
 
     for(int i = 0; i < this->answer.length(); i++)
     {
@@ -61,9 +63,32 @@ bool Question::CheckLetter(QChar letter, int multiplier)
         {
             letters[i].second = true;    //If letter is present, check it as guessed everywhere
             guessedAnyLetter = true;           //At least one unguessed - check as unguessed
-            points += multiplier;
+            m += multiplier;
         }
     }
+    if (guessedAnyLetter)
+    {
+        if(multiplier >= 100)
+        {
+            points += m;
+        }
+        else
+        {
+            switch(multiplier)
+            {
+            case 3:
+                points *= 3;
+                break;
+            case 5:
+                points *= 5;
+                break;
+            case 2:
+                points *= 2;
+                break;
+            }
+        }
+    }
+    qDebug() << "POINTS: "<< points;
     return guessedAnyLetter;                                       //Return word state (guessed or not).
 }
 

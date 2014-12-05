@@ -2,6 +2,7 @@ import QtQuick 2.3
 import QtQuick.Controls 1.2
 import com.me.qmlcomponents 1.0
 
+
 ApplicationWindow {
     id: mainWindow
     visible: true
@@ -13,14 +14,19 @@ ApplicationWindow {
     width: 800
     height: 600
 
-    opacity: 1
+    //opacity: 1
     title: qsTr("WonderField")
 
     property int multiplier: 0
     property bool wasRotated: false
     property string alph: "абвгдеёжзийклмнопрстуфхцчшщьыъэюя"
-
+    property string hintRoll: "быстрейкрутитебарабан"
+    property string hintPlus: "ыв"
+    property int sector: 0
     signal newGame
+
+    FontLoader { id: uniOne; source: "qrc:/uni.otf" }
+    FontLoader { id: uniTwo; source: "qrc:/uni2.otf" }
 
     MyGame
     {
@@ -31,7 +37,7 @@ ApplicationWindow {
     {
         myGame.resetGame();
         gameQuestion.text = myGame.getQuestion()
-        gameAnswer.x = 400 - (myGame.getLength() / 2) * 40
+        gameAnswer.x = 403 - (myGame.getLength() / 2) * 40 - ((myGame.getLength() - 1) / 2) * 22;
 
         for(var i = 0; i < 33; i++)
         {
@@ -44,9 +50,15 @@ ApplicationWindow {
 
     }
 
+/*
 
-    Item {
+*/
+
+    MainMenu
+    {
         id: mainMenu
+        z:  0
+
         Button {
             id: startGameButton
             x: 82
@@ -56,7 +68,8 @@ ApplicationWindow {
             text: "Начать игру"
             onClicked:
             {
-                mainMenu.visible = false; gameScreen.visible = true;
+                mainMenu.visible = false;
+                gameScreen.visible = true;
                 gameQuestion.text = myGame.getQuestion()
             }
         }
@@ -70,41 +83,32 @@ ApplicationWindow {
             text: "Выход"
             onClicked: close()
         }
+    }
 
-        Image {
-            id: rotatingBaraban
-            x: 566
-            y: -50
-            width: 700
-            height: 700
-            sourceSize.width: 415
-            source: "w_bar.png"
-            smooth: true
-            RotationAnimation on rotation {
-                     loops: Animation.Infinite
-                     from: 0
-                     to: 360
-                     //SmoothedAnimation: 1
-                     duration: 10000
-                 }
+    DialogWindow
+    {
+        id:             dialogWindow
+        x:              0
+        y:              0
+        z:              10
+
+        visible:        false
+        backHeight:     mainWindow.height
+        backWidth:      mainWindow.width
+
+        onButtonOkClicked:
+        {
+            dialogWindow.visible = false;
+            alphabet.enabled = true
         }
-
-        Image {
-            id: gameLogo
-            x: 30
-            y: 30
-            width: 494
-            height: 194
-            source: "w_logo.png"
+        onButtonCancelClicked:
+        {
+            mainWindow.close()
         }
-
-
-
     }
 
     function updateLetters()
     {
-        console.log("WORD: " + myGame.getAnswer() + "COLUMNS: " + gameAnswer.columns)
         for(var i = 0; i < 13; i++)
         {
            if( i < myGame.getLength())
@@ -118,9 +122,14 @@ ApplicationWindow {
                gameAnswer.children[i].width = 0
            }
         }
+
+        pointsLabelText.text = myGame.getPoints()
+
         if(myGame.checkWord())
         {
             newGame()
+            alphabet.enabled = false
+            dialogWindow.visible = true
         }
     }
 
@@ -130,11 +139,76 @@ ApplicationWindow {
         id: gameScreen
         visible: false
 
+        Image {
+            id: gameBackground
+            x: 0
+            y: 0
+            width: 800
+            height: 600
+            source: "w_background.png"
+        }
+
+        Rectangle
+        {
+            id: pointsLabel
+
+            width:  90
+            height: 35
+
+            x:  785 - width
+            y:  25
+
+            color:  "transparent"
+            Text {
+                id: pointsLabelText
+                text: qsTr("0")
+                anchors.fill: parent
+                font.family: uniOne.name
+                color:  "white"
+                horizontalAlignment: Text.AlignRight
+                verticalAlignment: Text.AlignVCenter
+                fontSizeMode: Text.Fit
+                font.pointSize: 100
+                onTextChanged:
+                {
+                    if(pointsLabelText.text > highScoreLabelText.text)
+                    {
+                        highScoreLabelText.text = pointsLabelText.text
+                    }
+                }
+            }
+        }
+
+        Rectangle
+        {
+            id: highScoreLabel
+
+            width:  90
+            height: 35
+
+            x:  15
+            y:  25
+
+            color:  "transparent"
+            Text {
+                id: highScoreLabelText
+                text: qsTr("0")
+                anchors.fill: parent
+                font.family: uniOne.name
+                color:  "white"
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                fontSizeMode: Text.Fit
+                font.pointSize: 100
+            }
+        }
+
+
         Grid {
                 id: gameAnswer
-                x: 400 - (myGame.getLength() / 2) * 40; y: 370
+                x: 403 - (myGame.getLength() / 2) * 40 - ((myGame.getLength() - 1) / 2) * 22; y: 340
                 z: 2
-                rows: 1; columns: myGame.getLength(); spacing: 1
+                rows: 1; columns: myGame.getLength(); spacing: 22
 
                 WTextField{}
                 WTextField{}
@@ -151,20 +225,42 @@ ApplicationWindow {
                 WTextField{}
             }
 
-        Text {
-            id: gameQuestion
+
+        Rectangle
+        {
+            z: 1
             x: 36
-            y: 215
+            y: 180
             width: 740
             height: 115
-            text: ("")
-            verticalAlignment: Text.AlignBottom
-            wrapMode: Text.WordWrap
-            font.family: "Tahoma"
-            horizontalAlignment: Text.AlignHCenter
-            font.pixelSize: 17
-        }
 
+            color: "transparent"
+            radius: 5
+            border.width: 3
+            border.color: "white"
+
+
+            Text
+            {
+                id: gameQuestion
+                z:  2
+                anchors.centerIn: parent
+                width: parent.width - 4;
+                height: parent.height - 4
+
+                text: ("")
+                color: "white"
+
+                wrapMode: Text.WordWrap
+                font.family: uniTwo.name
+
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                fontSizeMode: Text.Fit
+                font.pointSize: 100
+
+            }
+        }
 
 
         Grid {
@@ -214,6 +310,7 @@ ApplicationWindow {
             id: gameBaraban
             x: 50
             y: -550
+            z: 1
             width: 700
             height: 700
             source: "w_bar.png"
@@ -233,11 +330,67 @@ ApplicationWindow {
             }
             ParallelAnimation {
                 id: rotateBaraban
-                NumberAnimation { target: gameBaraban; properties: "rotation"; duration: 1000 + Math.random()*2000; easing.type: Easing.InOutQuad; to: gameBaraban.rotation + 500 + Math.random()*1200}
+                NumberAnimation {
+                    target: gameBaraban;
+                    properties: "rotation";
+                    duration: 3000 + Math.random()*2000; easing.type: Easing.InOutQuad;
+                    to: gameBaraban.rotation + 700 + Math.random()*360}
                 onStopped:
                 {
-                    multiplier = gameBaraban.rotation % 360;
-                    console.log(multiplier);
+                    sector = Math.floor((gameBaraban.rotation % 360)/ 30);
+
+                    switch(sector)
+                    {
+                    case 0:
+                        console.log("100");
+                        multiplier = 100;
+                        break;
+                    case 1:
+                        console.log("x3");
+                        multiplier = 3;
+                        break;
+                    case 2:
+                        console.log("500");
+                        multiplier = 500;
+                        break;
+                    case 3:
+                        console.log("0");
+                        multiplier = 0;
+                        break;
+                    case 4:
+                        console.log("200");
+                        multiplier = 200;
+                        break;
+                    case 5:
+                        console.log("600");
+                        multiplier = 600;
+                        break;
+                    case 6:
+                        console.log("x5");
+                        multiplier = 5;
+                        break;
+                    case 7:
+                        console.log("400");
+                        multiplier = 400;
+                        break;
+                    case 8:
+                        console.log("+1");
+                        //+1
+                        break;
+                    case 9:
+                        console.log("Б");
+                        myGame.setPoints(0);
+                        updateLetters();
+                        break;
+                    case 10:
+                        console.log("x2");
+                        multiplier = 2;
+                        break;
+                    case 11:
+                        console.log("900");
+                        multiplier = 900;
+                        break;
+                    }
                     wasRotated = true
                 }
             }

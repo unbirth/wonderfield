@@ -19,7 +19,7 @@ private:
     pair <QChar, bool> alphabet[32];
     QString playerName;
 
-    void setPoints(int points);
+
 
 public:
     Game();
@@ -33,6 +33,8 @@ public slots:
     void resetAlphabet();
     void resetGame();
     void setName(QString name);
+    void setPoints(int points);
+    int getPoints();
     QString getLetter(int index);
     QString getAnswer();
     QString getQuestion();
