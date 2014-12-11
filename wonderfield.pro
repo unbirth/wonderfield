@@ -19,3 +19,5 @@ HEADERS += \
     base.h \
     game.h \
     question.h
+
+CONFIG += console

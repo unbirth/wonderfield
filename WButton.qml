@@ -21,6 +21,7 @@ Rectangle
         property string text: "Button"
         signal clicked
         signal appeared
+        signal hide
 
 
         width: 40; height: 40
@@ -29,6 +30,10 @@ Rectangle
         color: "white"
         opacity: 1
 
+        onHide:
+        {
+            hideAnimation.start();
+        }
 
         onAppeared:
         {
@@ -50,12 +55,26 @@ Rectangle
                     if (wasRotated == true)
                     {
                         container.clicked();
-                        hideAnimation.start();
-                        //container.opacity = 0
                         container.enabled = false;
+                        hideAnimation.start();
 
                         if(multiplier != 8)
-                            myGame.guessLetter(text, multiplier)
+                        {
+                            if(myGame.guessLetter(text, multiplier))
+                            {
+                                letterGuessed()
+
+                                if(guessInRow == 3)
+                                {
+                                    guessInRow = 0;
+                                }
+                            }
+                            else
+                            {
+                                guessInRow = 0;
+                            }
+                        }
+
 
                         wasRotated = false;
                     }

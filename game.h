@@ -14,11 +14,10 @@ class Game : public QObject
     Q_OBJECT
 
 private:
-    Base base;
-    unsigned long long points;
-    pair <QChar, bool> alphabet[32];
     QString playerName;
-
+    qlonglong points;
+    Base base;
+    pair <QChar, bool> alphabet[32];
 
 
 public:
@@ -27,17 +26,18 @@ public:
     ~Game();
 
 public slots:
-    bool guessLetter(QString letter, int multiplier);
+    bool guessLetter(QString letter, qint32 multiplier);
     bool checkWord();
-    int getLength();
+    qint32 getLength();
     void resetAlphabet();
     void resetGame();
     void setName(QString name);
-    void setPoints(unsigned long long points);
-    unsigned long long getPoints();
-    QString getLetter(int index);
+    void setPoints(qlonglong points);
+    qlonglong getPoints();
+    QString getLetter(qint32 index);
     QString getAnswer();
     QString getQuestion();
+    QString getPrize();
 
 };
 

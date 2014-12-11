@@ -5,18 +5,24 @@
 class Base
 {
 private:
-    pair <Question, bool>* base;
-    Question currentQuestion;
-    int amount;
+    pair <Question, bool>*  base;
+    QString*                prizes;
+    Question                currentQuestion;
+    qint32                  amount;
+    qint32                  prizeAmount;
+    qint32                  lastPrize;
 
 public:
     Base();
     ~Base();
 
-    Question *returnCurrentQuestion();
+    Question                *returnCurrentQuestion();
 
-    void Load(string filename);
-    void LoadQuestion();
+    QString                 getRandomPrize();
+
+    void                    Load(QString filename);
+    void                    LoadPrizes(QString filename);
+    void                    LoadQuestion();
 };
 
 #endif // BASE_H

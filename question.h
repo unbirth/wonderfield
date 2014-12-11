@@ -12,7 +12,7 @@ class Question                                      //В этом классе �
 private:
     QString question;                                //Вопрос
     QString answer;                                  //Ответ
-    int length;                                     //Длина ответа
+    qint32 length;                                     //Длина ответа
     pair <QChar, bool>* letters;                     //Пары: буква слова - была ли угадана
 
 public:
@@ -21,9 +21,9 @@ public:
 
     void Form(QString question, QString answer);      //Формируем новый вопрос, грубо говоря - конструктор с параметрами
     QString getQuestion();                            //Вывод на экран, отладочная функция
-    int CheckLetter(QChar letter, int points, int multiplier);                  //Угадывание буквы;         todo: доработать эту функцию
+    qint32 CheckLetter(QChar letter, qint32 points, qint32 multiplier);                  //Угадывание буквы;         todo: доработать эту функцию
     bool CheckWord();                    //Угадывание целого слова;  todo: дописать
-    int getAmount();
+    qint32 getAmount();
     QString getAnswer();
     pair <QChar, bool>* getLetters();
 

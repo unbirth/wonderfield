@@ -24,14 +24,14 @@ void Question::Form(QString question, QString answer)
     this->answer = answer;
     this->length = answer.length();
     this->letters = new pair<QChar, bool>[this->length];
-    for (int i = 0; i < this->length; i++)
+    for (qint32 i = 0; i < this->length; i++)
     {
         this->letters[i].first = this->answer[i];
         this->letters[i].second = false;    //Was this letter guessed or not.
     }
 }
 
-int Question::getAmount()
+qint32 Question::getAmount()
 {
     return this->length;
 }
@@ -50,13 +50,13 @@ pair<QChar, bool>* Question::getLetters()
     return this->letters;
 }
 
-int Question::CheckLetter(QChar letter, int points, int multiplier)
+qint32 Question::CheckLetter(QChar letter, qint32 points, qint32 multiplier)
 {
     bool guessedAnyLetter = false;                                  //Shows if all letters have been guessed
-    int m = 0;
+    qint32 m = 0;
 
 
-    for(int i = 0; i < this->answer.length(); i++)
+    for(qint32 i = 0; i < this->answer.length(); i++)
     {
         if(letters[i].first.toLower() == letter)
         {
@@ -76,8 +76,7 @@ int Question::CheckLetter(QChar letter, int points, int multiplier)
         {
             switch(multiplier)
             {
-            case 0:
-                return points;
+
             case 3:
                 return points *= 3;
             case 5:
@@ -87,17 +86,17 @@ int Question::CheckLetter(QChar letter, int points, int multiplier)
             }
         }
     }
-    else return 0;                                     //Return word state (guessed or not).
+    return points;                                     //Return word state (guessed or not).
 }
 
 bool Question::CheckWord()
 {
-    for(int i = 0; i < this->length; i++)
+    for(qint32 i = 0; i < this->length; i++)
     {
         if(!this->letters[i].second) return false;
     }
 
-    for(int i = 0; i < this->length; i++)
+    for(qint32 i = 0; i < this->length; i++)
     {
         this->letters[i].second = false;
     }

@@ -18,13 +18,14 @@ ApplicationWindow {
     title: qsTr("WonderField")
 
     property int multiplier: 0
+    property int sector: 0
+    property int guessInRow:    0
     property bool wasRotated: false
     property bool bonusPlus: false
     property string alph: "абвгдеёжзийклмнопрстуфхцчшщьыъэюя"
-    property string hintRoll: "быстрейкрутитебарабан"
-    property string hintPlus: "ыв"
-    property int sector: 0
+    property string player: "аноним"
     signal newGame
+    signal letterGuessed
 
     FontLoader { id: uniOne; source: "qrc:/uni.otf" }
     FontLoader { id: uniTwo; source: "qrc:/uni2.otf" }
@@ -34,21 +35,50 @@ ApplicationWindow {
         id: myGame
     }
 
+    TextDialog
+    {
+        id:     hello
+        message: "А кто это у нас тут такой?"
+        buttonText: "вот"
+        visible: false;
+        onButtonOkClicked:
+        {
+            player =
+            mainMenu.visible = false;
+            gameScreen.visible = true;
+            gameQuestion.text = myGame.getQuestion()
+        }
+        z: 10
+    }
+
+    TextDialog
+    {
+        id:     nameWord
+        message: "Назовите, пожалуйста, слово:"
+        buttonText: "Как-то так"
+        visible: false;
+        onButtonOkClicked:
+        {
+
+        }
+
+        z: 10
+    }
+
     Notification
     {
         id:     pleaseRoll;
         message: "Крутите, пожалуйста, барабан!";
+        buttonText: "Ой, сейчас!"
         visible: false;
         z: 10;
-
-
-
     }
 
     Notification
     {
         id:     pleaseChoose;
         message: "Выберите, пожалуйста, букву!";
+        buttonText: "Да-да!"
         visible: false;
         z: 10;
     }
@@ -57,6 +87,7 @@ ApplicationWindow {
     {
         id:     pleaseChooseBox;
         message: "Выберите, пожалуйста, клетку!";
+        buttonText: "Сию минуту!"
         visible: false;
         z: 10;
     }
@@ -77,10 +108,19 @@ ApplicationWindow {
         updateLetters()
     }
 
+    onLetterGuessed:
+    {
+        guessInRow = guessInRow + 1
+        if (guessInRow >= 3)
+        {
+
+        }
+    }
+
     MainMenu
     {
         id: mainMenu
-        z:  0
+        z:  0  
 
         Rectangle
         {
@@ -89,7 +129,6 @@ ApplicationWindow {
             y: 275
             width: 390
             height: 125
-
 
             color:      "transparent"
             border.width: 3
@@ -115,9 +154,7 @@ ApplicationWindow {
                 anchors.fill: parent
                 onClicked:
                 {
-                    mainMenu.visible = false;
-                    gameScreen.visible = true;
-                    gameQuestion.text = myGame.getQuestion()
+                    hello.visible = true;
                 }
             }
         }
@@ -205,7 +242,9 @@ ApplicationWindow {
         {
             //newGame()
             alphabet.enabled = false
+            dialogWindow.dialogMessage = "Поздравляем, вы победили! Ваш приз - " + myGame.getPrize();
             dialogWindow.visible = true
+            guessInRow = 0
         }
     }
 
@@ -228,11 +267,11 @@ ApplicationWindow {
         {
             id: pointsLabel
 
-            width:  90
+            width:  100
             height: 35
 
             x:  785 - width
-            y:  25
+            y:  35
 
             color:  "transparent"
             Text {
@@ -257,13 +296,45 @@ ApplicationWindow {
 
         Rectangle
         {
+            id: pointsLabelName
+
+            width:  100
+            height: 35
+
+            x:  785 - width
+            y:  5
+
+            color:  "transparent"
+            Text {
+                id: pointsLabelNameText
+                text: qsTr("Очки")
+                anchors.fill: parent
+                font.family: uniOne.name
+                color:  "white"
+                horizontalAlignment: Text.AlignRight
+                verticalAlignment: Text.AlignVCenter
+                fontSizeMode: Text.Fit
+                font.pointSize: 100
+                onTextChanged:
+                {
+                    if(pointsLabelText.text * 1 > highScoreLabelText.text * 1)
+                    {
+                        highScoreLabelText.text = pointsLabelText.text
+                    }
+                }
+            }
+        }
+
+
+        Rectangle
+        {
             id: highScoreLabel
 
-            width:  90
+            width:  100
             height: 35
 
             x:  15
-            y:  25
+            y:  35
 
             color:  "transparent"
             Text {
@@ -279,6 +350,29 @@ ApplicationWindow {
             }
         }
 
+        Rectangle
+        {
+            id: highScoreNameLabel
+
+            width:  100
+            height: 35
+
+            x:  15
+            y:  5
+
+            color:  "transparent"
+            Text {
+                id: highScoreNameLabelText
+                text: "рекорд"
+                anchors.fill: parent
+                font.family: uniOne.name
+                color:  "white"
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignVCenter
+                fontSizeMode: Text.Fit
+                font.pointSize: 100
+            }
+        }
 
         Grid {
                 id: gameAnswer

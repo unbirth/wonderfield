@@ -4,18 +4,18 @@ import com.me.qmlcomponents 1.0
 
 Rectangle {
 
-    id: notificationWindow
+    id: textDialogWindow
     property    string  message:            "Здесь могла быть ваша реклама"
     property    string  buttonText:         "А это надпись на кнопке"
     property    int     backWidth:          800
     property    int     backHeight:         600
 
     signal              buttonOkClicked
-
+    signal              textClicked
 
     Rectangle
     {
-        id:         notificationWindowBackground
+        id:         textDialogWindowBackground
         color:      "black"
         z:          3
         width:      backWidth
@@ -41,35 +41,73 @@ Rectangle {
 
         Rectangle
         {
-            id:         notificationTextBackground
+            id:         textDialogTextBackground
 
             x:          25
             y:          25
 
             width:      parent.width - 50
-            height:     100
+            height:     50
 
 
             color:      "transparent"
-            Text {
-                id: notificationText
+            Text
+            {
+                id: textDialogText
                 text: message
                 anchors.fill: parent
-
                 font.family: uniTwo.name
                 color:  "white"
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 fontSizeMode: Text.Fit
                 font.pointSize: 100
+
             }
         }
 
         Rectangle
         {
-            id: notificationOkBackground
+            id:         textDialogInputBackground
+
+            x:              25
+            y:              80
+
+            width:          parent.width - 50
+            height:         50
+
+            TextInput{
+                anchors.fill: parent
+                width: parent.width - 50
+                id: textDialogInput
+                font.family: uniTwo.name
+                text: "ЖМИ СЮДА"
+                color:  "white"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                font.pointSize: 20
+                maximumLength: 14
+
+                MouseArea
+                {
+                    id: textMouseArea
+                    anchors.fill: parent
+                    onClicked:
+                    {
+                        textClicked()
+                        textDialogInput.text = ""
+                        textDialogInput.forceActiveFocus()
+                    }
+                }
+            }
+            color:      "transparent"
+        }
+
+        Rectangle
+        {
+            id: textDialogOkBackground
             x:          parent.width / 2 - width / 2
-            y:          parent.height - height - 25
+            y:          parent.height - height - 15
 
             height:     50
             width:      parent.width / 2
@@ -89,7 +127,7 @@ Rectangle {
                 color: "transparent"
 
                 Text {
-                    id: notificationOk
+                    id: textDialogOk
                     text: buttonText
 
                     anchors.fill: parent
@@ -102,15 +140,19 @@ Rectangle {
                     fontSizeMode: Text.Fit
                     font.pointSize: 100
                 }
-                MouseArea
+            }
+
+            MouseArea
+            {
+                id: okMouseArea
+                x: 12
+                y: 12
+                anchors.fill: parent
+                onClicked:
                 {
-                    id: okMouseArea
-                    anchors.fill: parent
-                    onClicked:
-                    {
-                        buttonOkClicked()
-                        notificationWindow.visible = false;
-                    }
+                    player = textDialogInput.text
+                    buttonOkClicked()
+                    textDialogWindow.visible = false;
                 }
             }
         }

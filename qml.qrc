@@ -12,5 +12,6 @@
         <file>MainMenu.qml</file>
         <file>DialogWindow.qml</file>
         <file>Notification.qml</file>
+        <file>TextDialog.qml</file>
     </qresource>
 </RCC>

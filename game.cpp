@@ -6,15 +6,16 @@
 #include <string>
 #include <cstdlib>
 #include <time.h>
+#include <qfile.h>
 
 using namespace std;
 
 
-int countPoints(int length)
+qint32 countPoints(qint32 length)
 {
 
-    int a = 100, b = 100;
-    for(int i = 1; i <= length; i++)
+    qint32 a = 100, b = 100;
+    for(qint32 i = 1; i <= length; i++)
     {
         a < b ? a += b : b += a;
     }
@@ -26,6 +27,7 @@ Game::Game()
     this->playerName = "Аноним Анонимыч";
     this->points = 0;
     this->resetGame();
+
 }
 
 Game::Game(QString name)
@@ -39,7 +41,7 @@ Game::~Game()
     //delete alphabet;
 }
 
-QString Game::getLetter(int index)
+QString Game::getLetter(qint32 index)
 {
     if(this->base.returnCurrentQuestion()->getLetters()[index].second)
     {
@@ -58,7 +60,7 @@ void Game::resetGame()
 void Game::resetAlphabet()
 {
     QString s = "абвгдежзийклмнопрстуфхцчшщьыъэюя";
-    for(int i = 0; i <= 32; i++)
+    for(qint32 i = 0; i <= 32; i++)
     {
         this->alphabet[i].first = s[i];
         this->alphabet[i].second = false;
@@ -66,7 +68,7 @@ void Game::resetAlphabet()
    // qDebug() << this->base.returnCurrentQuestion()->getQuestion() << this->base.returnCurrentQuestion()->getAnswer();
 }
 
-int Game::getLength()
+qint32 Game::getLength()
 {
     return this->base.returnCurrentQuestion()->getAmount();
 }
@@ -76,7 +78,7 @@ void Game::setName(QString name)
     this->playerName = name;
 }
 
-void Game::setPoints(unsigned long long points)
+void Game::setPoints(qlonglong points)
 {
     this->points = points;
 }
@@ -91,15 +93,15 @@ QString Game::getAnswer()
     return this->base.returnCurrentQuestion()->getAnswer();
 }
 
-bool Game::guessLetter(QString letter, int multiplier)
+bool Game::guessLetter(QString letter, qint32 multiplier)
 {
-    for(int i = 0; i < 33; i++)
+    for(qint32 i = 0; i < 33; i++)
     {
         if(this->alphabet[i].first == letter[0].toLower() && !this->alphabet[i].second)
         {
-            unsigned long long temp = this->points;
+            qlonglong temp = this->points;
             setPoints(this->base.returnCurrentQuestion()->CheckLetter(letter[0].toLower(), this->points, multiplier));
-            return (this->points - temp);
+            return true;
         }
     }
     return false;
@@ -110,8 +112,12 @@ bool Game::checkWord()
     return this->base.returnCurrentQuestion()->CheckWord();
 }
 
-unsigned long long Game::getPoints()
+qlonglong Game::getPoints()
 {
     return this->points;
 }
 
+QString Game::getPrize()
+{
+    return this->base.getRandomPrize();
+}

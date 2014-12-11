@@ -36,8 +36,19 @@ Rectangle
                 bonusPlus = false;
                 wasRotated = false;
                 myGame.guessLetter(myGame.getAnswer()[number], 100);
-                alphabet.enabled = true;
+
+                for(var i = 0; i < 33; i++)
+                {
+                    if (myGame.getAnswer()[number] == alphabet.children[i].text)
+                    {
+                        alphabet.children[i].hide();
+                        alphabet.children[i].enabled = false;
+                        break;
+                    }
+                }
                 updateLetters();
+                alphabet.enabled = true;
+
             }
 
         }

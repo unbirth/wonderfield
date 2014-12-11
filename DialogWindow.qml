@@ -9,6 +9,8 @@ Rectangle {
     property    int     backWidth:          800
     property    int     backHeight:         600
 
+    property    string  dialogMessage:          "Ваш приз - "
+
     signal              buttonOkClicked
     signal              buttonCancelClicked
 
@@ -21,7 +23,7 @@ Rectangle {
         z:          3
         width:      backWidth
         height:     backHeight
-        opacity:    0.95
+        opacity:    0.8
     }
 
     Rectangle
@@ -44,20 +46,21 @@ Rectangle {
         {
             id:         dialogTextBackground
 
-            x:          25
+            x:          15
             y:          25
 
             width:      parent.width - 50
-            height:     50
+            height:     80
 
             color:      "transparent"
             Text {
                 id: dialogText
-                text: qsTr("Двигаемся дальше?")
+                text: dialogMessage
                 anchors.fill: parent
 
                 font.family: uniTwo.name
                 color:  "white"
+                wrapMode: Text.WordWrap
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 fontSizeMode: Text.Fit
@@ -78,17 +81,29 @@ Rectangle {
             border.width: 3
             border.color: "white"
             radius:         5
-            Text {
-                id: dialogYes
-                text: qsTr("     Да, конечно!     ")
+            Rectangle
+            {
+                anchors.centerIn: parent
+                x: 0
+                y: 0
+                width: parent.width - 24
+                height: parent.height - 24
 
-                anchors.fill: parent
+                color: "transparent"
 
-                font.family: uniTwo.name
-                color:  "white"
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                font.pointSize: 16
+                Text {
+                    id: dialogYes
+                    text: qsTr("Забрать приз")
+
+                    anchors.fill: parent
+
+                    font.family: uniTwo.name
+                    color:  "white"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    fontSizeMode: Text.Fit
+                    font.pointSize: 100
+                }
             }
             MouseArea
             {
@@ -114,17 +129,29 @@ Rectangle {
             border.width: 3
             border.color: "white"
             radius:         5
-            Text {
-                id: dialogNo
-                text: qsTr("     Ни за что!     ")
+            Rectangle
+            {
+                anchors.centerIn: parent
+                x: 0
+                y: 0
+                width: parent.width - 24
+                height: parent.height - 24
 
-                anchors.fill: parent
+                color: "transparent"
 
-                font.family: uniTwo.name
-                color:  "white"
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                font.pointSize: 16
+                Text {
+                    id: dialogNo
+                    text: qsTr("ой, всё")
+
+                    anchors.fill: parent
+
+                    font.family: uniTwo.name
+                    color:  "white"
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    fontSizeMode: Text.Fit
+                    font.pointSize: 100
+                }
             }
             MouseArea
             {
