@@ -19,13 +19,14 @@ ApplicationWindow {
 
     property int multiplier: 0
     property int sector: 0
-    property int guessInRow:    0
+    property int wordsInRow:    0
     property bool wasRotated: false
     property bool bonusPlus: false
     property string alph: "абвгдеёжзийклмнопрстуфхцчшщьыъэюя"
     property string player: "аноним"
     signal newGame
     signal letterGuessed
+    signal textDialogLoaded
 
     FontLoader { id: uniOne; source: "qrc:/uni.otf" }
     FontLoader { id: uniTwo; source: "qrc:/uni2.otf" }
@@ -38,32 +39,26 @@ ApplicationWindow {
     TextDialog
     {
         id:     hello
-        message: "А кто это у нас тут такой?"
-        buttonText: "вот"
+        message: "привет! меня зовут"
+        buttonText: "вот так"
         visible: false;
+
+
         onButtonOkClicked:
         {
-            player =
-            mainMenu.visible = false;
-            gameScreen.visible = true;
-            gameQuestion.text = myGame.getQuestion()
+            if (inputText != "")
+            {
+                player = hello.inputText;
+                playerNameText.text = qsTr("барабанокрутильщик-профессионал: " + player)
+                mainMenu.visible = false;
+                gameScreen.visible = true;
+                gameQuestion.text = myGame.getQuestion()
+            }
         }
         z: 10
     }
 
-    TextDialog
-    {
-        id:     nameWord
-        message: "Назовите, пожалуйста, слово:"
-        buttonText: "Как-то так"
-        visible: false;
-        onButtonOkClicked:
-        {
 
-        }
-
-        z: 10
-    }
 
     Notification
     {
@@ -108,15 +103,6 @@ ApplicationWindow {
         updateLetters()
     }
 
-    onLetterGuessed:
-    {
-        guessInRow = guessInRow + 1
-        if (guessInRow >= 3)
-        {
-
-        }
-    }
-
     MainMenu
     {
         id: mainMenu
@@ -155,6 +141,7 @@ ApplicationWindow {
                 onClicked:
                 {
                     hello.visible = true;
+                    hello.windowLoaded();
                 }
             }
         }
@@ -216,6 +203,7 @@ ApplicationWindow {
         }
         onButtonCancelClicked:
         {
+            //myGame.checkRecord()
             mainWindow.close()
         }
     }
@@ -244,7 +232,7 @@ ApplicationWindow {
             alphabet.enabled = false
             dialogWindow.dialogMessage = "Поздравляем, вы победили! Ваш приз - " + myGame.getPrize();
             dialogWindow.visible = true
-            guessInRow = 0
+            wordsInRow++;
         }
     }
 
@@ -253,6 +241,46 @@ ApplicationWindow {
     {
         id: gameScreen
         visible: false
+
+        Settings
+        {
+            id: settingsPanel
+            x:  -200
+            y:  0
+            z:  10
+        }
+
+        AboutWindow
+        {
+            z: 10
+            visible: false
+            id: aboutWindow
+        }
+
+        TextDialog
+        {
+            id:     nameWord
+            message: "Назовите, пожалуйста, слово:"
+            buttonText: "Как-то так"
+            visible: false;
+            onButtonOkClicked:
+            {
+                if(myGame.guessWord(nameWord.inputText) != 0)
+                {
+                    myGame.setPoints(myGame.getPoints() + myGame.guessWord(nameWord.inputText))
+                    alphabet.enabled = false
+                    dialogWindow.dialogMessage = "Поздравляем, вы победили! Ваш приз - " + myGame.getPrize();
+                    dialogWindow.visible = true
+                    wordsInRow++;
+                }
+
+                else
+                {
+                    pleaseRoll.visible = true;
+                }
+            }
+            z: 10
+        }
 
         Image {
             id: gameBackground
@@ -289,6 +317,8 @@ ApplicationWindow {
                     if(pointsLabelText.text * 1 > highScoreLabelText.text * 1)
                     {
                         highScoreLabelText.text = pointsLabelText.text
+                        highScorePlayerText.text = player
+                        myGame.saveGame()
                     }
                 }
             }
@@ -339,7 +369,7 @@ ApplicationWindow {
             color:  "transparent"
             Text {
                 id: highScoreLabelText
-                text: qsTr("0")
+                text: myGame.getHighScore()
                 anchors.fill: parent
                 font.family: uniOne.name
                 color:  "white"
@@ -374,9 +404,40 @@ ApplicationWindow {
             }
         }
 
+        Rectangle
+        {
+            id: highScorePlayer
+
+            width:  100
+            height: 35
+
+            x:  15
+            y:  55
+
+            color:  "transparent"
+            Text {
+                id: highScorePlayerText
+                text: myGame.getHighScoreName()
+                anchors.fill: parent
+                font.family: uniOne.name
+                color:  "white"
+                horizontalAlignment: Text.AlignLeft
+                verticalAlignment: Text.AlignBottom
+                fontSizeMode: Text.Fit
+                font.pointSize: 12
+            }
+        }
+
+        HelpWindow
+        {
+           id: helpWindow
+           visible: false
+           z: 10
+        }
+
         Grid {
                 id: gameAnswer
-                x: 403 - (myGame.getLength() / 2) * 40 - ((myGame.getLength() - 1) / 2) * 22; y: 340
+                x: 403 - (myGame.getLength() / 2) * 40 - ((myGame.getLength() - 1) / 2) * 22; y: 320
                 z: 2
                 rows: 1; columns: myGame.getLength(); spacing: 22
 
@@ -438,7 +499,7 @@ ApplicationWindow {
         Grid {
                 id: alphabet
                 x: 73
-                y: 425
+                y: 385
                 rows: 3; columns: 11; spacing: 22;
 
                 WButton{text: alph[0]}
@@ -474,9 +535,30 @@ ApplicationWindow {
                 WButton{text: alph[30]}
                 WButton{text: alph[31]}
                 WButton{text: alph[32]}
-
-
             }
+
+        Rectangle
+        {
+            id: playerName
+
+            width:  760
+            height: 35
+
+            x:  400 - width / 2
+            y:  560
+
+            color:  "transparent"
+            Text {
+                id: playerNameText
+                anchors.fill: parent
+                font.family: uniOne.name
+                color:  "white"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignTop
+                fontSizeMode: Text.Fit
+                font.pointSize: 100
+            }
+        }
 
         Image {
             id: gameBaraban

@@ -7,11 +7,23 @@ Rectangle {
     id: textDialogWindow
     property    string  message:            "Здесь могла быть ваша реклама"
     property    string  buttonText:         "А это надпись на кнопке"
+    property    string  inputText:          ""
     property    int     backWidth:          800
     property    int     backHeight:         600
 
     signal              buttonOkClicked
     signal              textClicked
+    signal              windowLoaded
+
+    onVisibleChanged:
+    {
+        textDialogInput.text = "";
+    }
+
+    onWindowLoaded:
+    {
+        textDialogInput.forceActiveFocus();
+    }
 
     Rectangle
     {
@@ -47,7 +59,7 @@ Rectangle {
             y:          25
 
             width:      parent.width - 50
-            height:     50
+            height:     40
 
 
             color:      "transparent"
@@ -71,17 +83,20 @@ Rectangle {
             id:         textDialogInputBackground
 
             x:              25
-            y:              80
+            y:              65
+
+            color: "transparent";
 
             width:          parent.width - 50
             height:         50
 
             TextInput{
+
                 anchors.fill: parent
                 width: parent.width - 50
                 id: textDialogInput
-                font.family: uniTwo.name
-                text: "ЖМИ СЮДА"
+                font.family: uniOne.name
+                text: ""
                 color:  "white"
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -100,14 +115,13 @@ Rectangle {
                     }
                 }
             }
-            color:      "transparent"
         }
 
         Rectangle
         {
             id: textDialogOkBackground
             x:          parent.width / 2 - width / 2
-            y:          parent.height - height - 15
+            y:          parent.height - 80
 
             height:     50
             width:      parent.width / 2
@@ -150,7 +164,7 @@ Rectangle {
                 anchors.fill: parent
                 onClicked:
                 {
-                    player = textDialogInput.text
+                    inputText = textDialogInput.text
                     buttonOkClicked()
                     textDialogWindow.visible = false;
                 }

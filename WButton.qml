@@ -63,15 +63,6 @@ Rectangle
                             if(myGame.guessLetter(text, multiplier))
                             {
                                 letterGuessed()
-
-                                if(guessInRow == 3)
-                                {
-                                    guessInRow = 0;
-                                }
-                            }
-                            else
-                            {
-                                guessInRow = 0;
                             }
                         }
 
@@ -84,8 +75,6 @@ Rectangle
                         pleaseRoll.visible = true;
                     }
                 }
-
-
                 updateLetters();
             }
 

@@ -15,12 +15,14 @@ Base::Base()
 {
     this->Load("input.txt");
     this->LoadPrizes("prizes.txt");
+    this->LoadRecords("records.txt");
     lastPrize = -1;
 }
 
 Base::~Base()
 {
     delete this->base;
+    this->SaveRecords("records.txt");
 }
 
 void Base::LoadPrizes(QString filename)
@@ -51,6 +53,48 @@ void Base::LoadPrizes(QString filename)
         this->prizes[i] = prize;
         i++;
     }
+}
+
+
+void Base::LoadRecords(QString filename)
+{
+    QFile file(filename);
+    QTextStream in(&file);
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    hiScore = in.readLine().toInt();
+    hiScoreName= in.readLine();
+}
+
+void Base::SaveRecords(QString filename)
+{
+    QFile file(filename);
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream out(&file);
+    out << hiScore << "\n" << hiScoreName << "\n";
+}
+
+bool Base::CheckRecord(QString name, qint32 record)
+{
+    if (record > hiScore)
+    {
+        hiScore = record;
+        hiScoreName = name;
+        return true;
+    }
+    return false;
+}
+
+qint32 Base::getHiScore()
+{
+    return hiScore;
+}
+
+QString Base::getHiScoreName()
+{
+    return hiScoreName;
 }
 
 QString Base::getRandomPrize()

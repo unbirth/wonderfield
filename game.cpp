@@ -13,9 +13,8 @@ using namespace std;
 
 qint32 countPoints(qint32 length)
 {
-
     qint32 a = 100, b = 100;
-    for(qint32 i = 1; i <= length; i++)
+    for(qint32 i = 0; i < length; i++)
     {
         a < b ? a += b : b += a;
     }
@@ -38,7 +37,7 @@ Game::Game(QString name)
 
 Game::~Game()
 {
-    //delete alphabet;
+
 }
 
 QString Game::getLetter(qint32 index)
@@ -66,6 +65,11 @@ void Game::resetAlphabet()
         this->alphabet[i].second = false;
     }
    // qDebug() << this->base.returnCurrentQuestion()->getQuestion() << this->base.returnCurrentQuestion()->getAnswer();
+}
+
+bool Game::addRecord(QString name, qint32 record)
+{
+    return this->base.CheckRecord(name, record);
 }
 
 qint32 Game::getLength()
@@ -99,12 +103,43 @@ bool Game::guessLetter(QString letter, qint32 multiplier)
     {
         if(this->alphabet[i].first == letter[0].toLower() && !this->alphabet[i].second)
         {
-            qlonglong temp = this->points;
             setPoints(this->base.returnCurrentQuestion()->CheckLetter(letter[0].toLower(), this->points, multiplier));
             return true;
         }
     }
     return false;
+}
+
+qint32 Game::guessWord(QString word)
+{
+    if(word == this->base.returnCurrentQuestion()->getAnswer())
+    {
+        qint32 counter = 0;
+        for(qint32 i = 0; i < word.length(); i++)
+        {
+            if (!this->base.returnCurrentQuestion()->getLetters()[i].second)
+            {
+                counter++;
+            }
+        }
+        return countPoints(counter);
+    }
+    return 0;
+}
+
+void Game::saveGame()
+{
+    this->base.SaveRecords("records.txt");
+}
+
+qint32 Game::getHighScore()
+{
+    return this->base.getHiScore();
+}
+
+QString Game::getHighScoreName()
+{
+    return this->base.getHiScoreName();
 }
 
 bool Game::checkWord()

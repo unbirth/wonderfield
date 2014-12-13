@@ -159,6 +159,7 @@ Rectangle {
                 anchors.fill: parent
                 onClicked:
                 {
+                    myGame.addRecord(player, myGame.getPoints());
                     buttonCancelClicked()
                 }
             }

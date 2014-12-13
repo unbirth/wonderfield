@@ -15,6 +15,7 @@ Question::Question()
 
 Question::~Question()
 {
+
     delete letters;
 }
 
@@ -86,7 +87,7 @@ qint32 Question::CheckLetter(QChar letter, qint32 points, qint32 multiplier)
             }
         }
     }
-    return points;                                     //Return word state (guessed or not).
+    return points;
 }
 
 bool Question::CheckWord()

@@ -27,17 +27,22 @@ public:
 
 public slots:
     bool guessLetter(QString letter, qint32 multiplier);
+    qint32 guessWord(QString word);
+    qint32 getHighScore();
     bool checkWord();
     qint32 getLength();
     void resetAlphabet();
     void resetGame();
+    void saveGame();
     void setName(QString name);
     void setPoints(qlonglong points);
+    bool addRecord(QString name, int record);
     qlonglong getPoints();
     QString getLetter(qint32 index);
     QString getAnswer();
     QString getQuestion();
     QString getPrize();
+    QString getHighScoreName();
 
 };
 
