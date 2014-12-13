@@ -10,7 +10,7 @@ Rectangle {
     Image {
         id: helpFifth
         z:  1
-        source: "w_about.png"
+        source: "qrc:/res/pictures/w_about.png"
         anchors.fill: parent
         MouseArea
         {

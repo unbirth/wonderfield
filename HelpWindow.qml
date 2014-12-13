@@ -10,7 +10,7 @@ Rectangle {
     Image {
         id: helpFirst
         z:  5
-        source: "w_help1.png"
+        source: "qrc:/res/pictures/w_help1.png"
         anchors.fill: parent
         MouseArea
         {
@@ -25,7 +25,7 @@ Rectangle {
     Image {
         id: helpSecond
         z:  4
-        source: "w_help2.png"
+        source: "qrc:/res/pictures/w_help2.png"
         anchors.fill: parent
         MouseArea
         {
@@ -40,7 +40,7 @@ Rectangle {
     Image {
         id: helpThird
         z:  3
-        source: "w_help3.png"
+        source: "qrc:/res/pictures/w_help3.png"
         anchors.fill: parent
         MouseArea
         {
@@ -55,7 +55,7 @@ Rectangle {
     Image {
         id: helpFourth
         z:  2
-        source: "w_help4.png"
+        source: "qrc:/res/pictures/w_help4.png"
         anchors.fill: parent
         MouseArea
         {
@@ -70,7 +70,7 @@ Rectangle {
     Image {
         id: helpFifth
         z:  1
-        source: "w_help5.png"
+        source: "qrc:/res/pictures/w_help5.png"
         anchors.fill: parent
         MouseArea
         {

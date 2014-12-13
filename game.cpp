@@ -129,7 +129,7 @@ qint32 Game::guessWord(QString word)
 
 void Game::saveGame()
 {
-    this->base.SaveRecords("records.txt");
+    this->base.SaveRecords("..\\wonderfield\\res\\data\\records.txt");
 }
 
 qint32 Game::getHighScore()

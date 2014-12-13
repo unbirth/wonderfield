@@ -13,16 +13,16 @@ using namespace std;
 
 Base::Base()
 {
-    this->Load("input.txt");
-    this->LoadPrizes("prizes.txt");
-    this->LoadRecords("records.txt");
+    this->Load("..\\wonderfield\\res\\data\\input.txt");
+    this->LoadPrizes("..\\wonderfield\\res\\data\\prizes.txt");
+    this->LoadRecords("..\\wonderfield\\res\\data\\records.txt");
     lastPrize = -1;
 }
 
 Base::~Base()
 {
     delete this->base;
-    this->SaveRecords("records.txt");
+    this->SaveRecords("..\\wonderfield\\res\\data\\records.txt");
 }
 
 void Base::LoadPrizes(QString filename)

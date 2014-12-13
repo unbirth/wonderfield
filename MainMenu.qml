@@ -11,7 +11,7 @@ Item {
         y: 0
         width: 800
         height: 600
-        source: "w_background.png"
+        source: "qrc:/res/pictures/w_background.png"
     }
 
     Image {
@@ -21,7 +21,7 @@ Item {
         width: 700
         height: 700
         sourceSize.width: 415
-        source: "w_bar.png"
+        source: "qrc:/res/pictures/w_bar.png"
         smooth: true
         RotationAnimation on rotation {
                  loops: Animation.Infinite
@@ -40,7 +40,7 @@ Item {
         y: 30
         width: 328 * 1.5
         height: 151 * 1.5
-        source: "w_logo.png"
+        source: "qrc:/res/pictures/w_logo.png"
     }
 
 

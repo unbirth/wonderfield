@@ -1,20 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>w_bar.png</file>
-        <file>w_logo.png</file>
-        <file>w_pointer.png</file>
-        <file>w_background.png</file>
-        <file>w_side.png</file>
-        <file>w_help1.png</file>
-        <file>w_help2.png</file>
-        <file>w_help3.png</file>
-        <file>w_help4.png</file>
-        <file>w_help5.png</file>
-        <file>w_about.png</file>
-        <file>WButton.qml</file>
-        <file>uni.otf</file>
-        <file>uni2.otf</file>
         <file>WTextField.qml</file>
         <file>MainMenu.qml</file>
         <file>DialogWindow.qml</file>
@@ -24,5 +10,21 @@
         <file>BorderButton.qml</file>
         <file>HelpWindow.qml</file>
         <file>AboutWindow.qml</file>
+        <file>WButton.qml</file>
+
+        <file>res\pictures\w_bar.png</file>
+        <file>res\pictures\w_logo.png</file>
+        <file>res\pictures\w_pointer.png</file>
+        <file>res\pictures\w_background.png</file>
+        <file>res\pictures\w_side.png</file>
+        <file>res\pictures\w_help1.png</file>
+        <file>res\pictures\w_help2.png</file>
+        <file>res\pictures\w_help3.png</file>
+        <file>res\pictures\w_help4.png</file>
+        <file>res\pictures\w_help5.png</file>
+        <file>res\pictures\w_about.png</file>
+
+        <file>res\fonts\uni.otf</file>
+        <file>res\fonts\uni2.otf</file>
     </qresource>
 </RCC>

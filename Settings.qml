@@ -52,7 +52,7 @@ Rectangle {
         height:     backHeight
         Image {
             id: sideArrow
-            source: "w_side.png"
+            source: "qrc:/res/pictures/w_side.png"
             x:  backWidth
             y:  backHeight / 3 * 2 - height / 2
             MouseArea
@@ -168,7 +168,7 @@ Rectangle {
         buttonText: "выход"
         onButtonClicked:
         {
-            buttonQuitClicked()
+            buttonExitClicked()
             opacityHide.start()
             xHide.start()
             hidden = true;

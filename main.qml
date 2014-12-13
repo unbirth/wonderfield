@@ -28,8 +28,8 @@ ApplicationWindow {
     signal letterGuessed
     signal textDialogLoaded
 
-    FontLoader { id: uniOne; source: "qrc:/uni.otf" }
-    FontLoader { id: uniTwo; source: "qrc:/uni2.otf" }
+    FontLoader { id: uniOne; source: "qrc:/res/fonts/uni.otf" }
+    FontLoader { id: uniTwo; source: "qrc:/res/fonts/uni2.otf" }
 
     MyGame
     {
@@ -248,6 +248,11 @@ ApplicationWindow {
             x:  -200
             y:  0
             z:  10
+            onButtonExitClicked:
+            {
+                myGame.saveGame();
+                close();
+            }
         }
 
         AboutWindow
@@ -288,7 +293,7 @@ ApplicationWindow {
             y: 0
             width: 800
             height: 600
-            source: "w_background.png"
+            source: "qrc:/res/pictures/w_background.png"
         }
 
         Rectangle
@@ -567,7 +572,7 @@ ApplicationWindow {
             z: 1
             width: 700
             height: 700
-            source: "w_bar.png"
+            source: "qrc:/res/pictures/w_bar.png"
 
             MouseArea
             {
@@ -670,7 +675,7 @@ ApplicationWindow {
             width: 30
             height: 60
             z: 1
-            source: "w_pointer.png"
+            source: "qrc:/res/pictures/w_pointer.png"
         }
     }
 }
